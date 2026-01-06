@@ -1,0 +1,189 @@
+Você é um designer de produto (UI/UX) sênior, especializado em SaaS corporativo.
+
+Seu objetivo é DESENHAR APENAS A INTERFACE (UI), sem implementar código e sem backend.
+Crie wireframes detalhados + especificação visual.
+
+================================================
+CONTEXTO DO PRODUTO
+================================================
+Produto SaaS corporativo focado em:
+- Consulta de DNS, IP e domínios
+- Monitoramento de domínios
+- Monitoramento de uptime
+- Monitoramento de blacklist de e-mail
+- Alertas e notificações
+- Uso colaborativo em equipes (empresas)
+
+O produto deve transmitir:
+- Confiança
+- Robustez
+- Clareza técnica
+- Visual limpo e profissional
+
+================================================
+DESIGN SYSTEM (OBRIGATÓRIO)
+================================================
+- Base visual: Geist Design System
+- Estilo:
+  - Minimalista
+  - Corporativo
+  - SaaS moderno
+- Tipografia, espaçamento e cores alinhadas ao Geist
+- Componentes inspirados em shadcn/ui
+- Animações sutis (inspiradas em Magic UI)
+
+Não usar:
+- Estilo marketing pesado
+- Gradientes chamativos
+- Visual gamer ou informal
+
+================================================
+ESTRUTURA DO SITE (NÃO LOGADO)
+================================================
+
+### 1. Landing Page
+Objetivo: explicar claramente o produto e gerar cadastro
+
+Seções:
+- Header com logo + Login / Criar conta
+- Hero:
+  - Headline clara sobre monitoramento de domínios e infraestrutura
+  - CTA: “Criar conta gratuita”
+- Seção: Ferramentas gratuitas
+  - Consulta DNS
+  - Consulta IP
+- Seção: Recursos principais
+  - Monitoramento de domínio (vencimento)
+  - Monitoramento de uptime
+  - Monitoramento de blacklist de e-mail
+- Seção: Uso corporativo
+  - Convite de colegas
+  - Perfis e permissões
+- Footer simples e institucional
+
+================================================
+AUTENTICAÇÃO
+================================================
+
+### 2. Login
+- Email + senha
+- Link “Criar conta”
+- Link “Esqueci a senha”
+- Visual simples e direto
+
+### 3. Cadastro
+- Nome
+- Email
+- Senha
+- Confirmação de senha
+- CTA: Criar conta
+- Mensagem clara de onboarding corporativo
+
+================================================
+ESTRUTURA DA ÁREA LOGADA (CORE)
+================================================
+
+### Layout Geral
+- Sidebar fixa (desktop)
+- Header superior com:
+  - Nome da empresa
+  - Usuário logado
+  - Ícone de notificações
+- Conteúdo central em cards e tabelas
+
+### 4. Dashboard
+Objetivo: visão rápida do status geral
+
+Elementos:
+- Cards de resumo:
+  - Domínios monitorados
+  - Serviços monitorados (uptime)
+  - Alertas ativos
+  - Blacklists detectadas
+- Lista de alertas recentes
+- Status visual (ok / warning / critical)
+
+================================================
+FUNCIONALIDADES (UI APENAS)
+================================================
+
+### 5. Domínios
+- Lista de domínios cadastrados
+- Informações visuais:
+  - Status
+  - Vencimento
+  - Monitoramentos ativos
+- Ações:
+  - Adicionar domínio
+  - Editar
+  - Remover
+- Opção:
+  - Monitorar blacklist de e-mail
+
+### 6. Ferramentas Gratuitas
+- Consulta DNS
+- Consulta IP
+- Interface simples:
+  - Campo de input
+  - Botão de consulta
+  - Área de resultado estruturada
+
+### 7. Monitoramento de Uptime
+- Lista de endpoints monitorados
+- Status visual por serviço
+- Histórico visual (linha ou badges simples)
+- Botão “Adicionar monitoramento”
+
+### 8. Blacklist de E-mail
+- Lista de domínios monitorados
+- Status:
+  - Limpo
+  - Em blacklist
+- Destaque visual para risco
+
+================================================
+NOTIFICAÇÕES
+================================================
+
+### 9. Central de Alertas
+- Lista cronológica de alertas
+- Filtros:
+  - Tipo (uptime, domínio, blacklist)
+  - Severidade
+- Estados visuais claros
+- Leitura rápida (estilo inbox)
+
+================================================
+EQUIPE E PERMISSÕES
+================================================
+
+### 10. Gestão de Usuários
+- Lista de usuários da empresa
+- Convite de novos usuários
+- Perfis:
+  - Administrador
+  - Usuário padrão
+- Ações:
+  - Alterar permissão
+  - Remover acesso
+
+================================================
+RESTRIÇÕES
+================================================
+- NÃO criar backend
+- NÃO definir regras técnicas
+- NÃO implementar código
+- NÃO inventar features fora do escopo
+- ENTREGAR apenas:
+  - Wireframe
+  - Layout visual
+  - Organização de telas
+  - Hierarquia de informação
+
+================================================
+RESULTADO ESPERADO
+================================================
+- UI completa e coerente
+- Fluxos claros (login → dashboard → funcionalidades)
+- Visual corporativo, limpo e confiável
+- Pronto para implementação em Next.js com Geist
