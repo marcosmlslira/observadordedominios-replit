@@ -36,161 +36,121 @@ export default function LandingPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="py-24 md:py-32 px-6 border-b">
+        <section className="py-24 md:py-32 px-6 relative overflow-hidden">
+          {/* Prisma-like Background Glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full bg-primary/20 blur-[120px] rounded-full -z-10 opacity-50"></div>
+          
           <div className="container mx-auto max-w-5xl text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-sm font-medium mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm font-medium mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
               </span>
               v2.0 is now live for Enterprise
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
-              Infrastructure monitoring <br className="hidden md:block"/>
-              <span className="text-muted-foreground">reimagined for teams.</span>
+            <h1 className="text-6xl md:text-8xl font-extrabold tracking-tighter mb-6 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
+              Infrastructure that <br className="hidden md:block"/>
+              fits how you scale
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
-              Monitor domains, track uptime, and prevent blacklist issues with a platform designed for reliability and collaboration.
+              A corporate monitoring platform that fits neatly into your workflow, scales with your app, and gets out of your way. From first domain to global infrastructure.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
               <Link href="/signup">
-                <Button size="lg" className="h-12 px-8 text-base">
-                  Create Free Account
+                <Button size="lg" className="h-12 px-8 text-base bg-white text-black hover:bg-white/90">
+                  Get Started Now
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </Link>
-              <Link href="/tools">
-                <Button variant="outline" size="lg" className="h-12 px-8 text-base">
-                  Try Free Tools
-                </Button>
-              </Link>
-            </div>
-
-            {/* Hero Visual */}
-            <div className="mt-20 relative rounded-xl border bg-card shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-1000 delay-500">
-              <div className="aspect-[16/9] bg-muted/50 flex items-center justify-center text-muted-foreground">
-                <div className="w-full h-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
-                  {/* Abstract UI Mockup Placeholder */}
-                  <div className="p-8 w-full h-full flex flex-col gap-4">
-                    <div className="flex gap-4">
-                      <div className="w-1/4 h-32 bg-background border rounded-lg shadow-sm"></div>
-                      <div className="w-1/4 h-32 bg-background border rounded-lg shadow-sm"></div>
-                      <div className="w-1/4 h-32 bg-background border rounded-lg shadow-sm"></div>
-                      <div className="w-1/4 h-32 bg-background border rounded-lg shadow-sm"></div>
-                    </div>
-                    <div className="flex-1 bg-background border rounded-lg shadow-sm w-full"></div>
-                  </div>
-                </div>
+              <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 h-12 rounded-lg text-sm font-mono text-white/80">
+                <span className="opacity-50">$</span> npx netguardian init
+                <button className="ml-2 p-1 hover:bg-white/10 rounded transition-colors">
+                  <Check className="w-3 h-3" />
+                </button>
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* Free Tools Section */}
-        <section id="tools" className="py-24 px-6 bg-muted/30">
-          <div className="container mx-auto max-w-5xl">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">Instant Diagnostics</h2>
-              <p className="text-muted-foreground text-lg">Powerful tools available without login.</p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="group relative overflow-hidden rounded-xl border bg-background p-8 hover:border-primary/50 transition-colors">
-                <div className="mb-6 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                  <Globe className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">DNS Lookup</h3>
-                <p className="text-muted-foreground mb-6">Instantly resolve DNS records for any domain worldwide.</p>
-                <div className="flex gap-2">
-                  <input className="flex-1 h-10 rounded-md border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="example.com" />
-                  <Button variant="secondary">Check</Button>
-                </div>
+            {/* Feature Grid - Prisma Style */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-24">
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02] text-left hover:bg-white/[0.04] transition-colors">
+                <Globe className="w-5 h-5 text-blue-400 mb-4" />
+                <h3 className="font-bold mb-2">Local and Remote DNS</h3>
+                <p className="text-sm text-muted-foreground">Sync DNS configs and manage databases from your local environment seamlessly.</p>
               </div>
-
-              <div className="group relative overflow-hidden rounded-xl border bg-background p-8 hover:border-primary/50 transition-colors">
-                <div className="mb-6 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                  <Search className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">IP Lookup</h3>
-                <p className="text-muted-foreground mb-6">Get detailed geolocation and ISP data for any IP address.</p>
-                <div className="flex gap-2">
-                  <input className="flex-1 h-10 rounded-md border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="8.8.8.8" />
-                  <Button variant="secondary">Search</Button>
-                </div>
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02] text-left hover:bg-white/[0.04] transition-colors">
+                <Activity className="w-5 h-5 text-emerald-400 mb-4" />
+                <h3 className="font-bold mb-2">Real-time Uptime</h3>
+                <p className="text-sm text-muted-foreground">Manage and explore systemic infrastructure with a visual data browser built for speed.</p>
+              </div>
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02] text-left hover:bg-white/[0.04] transition-colors">
+                <Search className="w-5 h-5 text-purple-400 mb-4" />
+                <h3 className="font-bold mb-2">Advanced Similarity</h3>
+                <p className="text-sm text-muted-foreground">Code-level integration with type-safe monitoring and automated threat detection.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Core Features */}
-        <section id="features" className="py-24 px-6 border-t">
-          <div className="container mx-auto max-w-6xl">
-            <div className="grid md:grid-cols-3 gap-12">
-              <div className="space-y-4">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                  <Globe className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-bold">Domain Monitoring</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Never lose a domain again. Get automated alerts for expiration dates, SSL certificate validity, and DNS changes.
-                </p>
+        {/* Product Sections */}
+        <section className="py-24 px-6 border-t border-white/5">
+          <div className="container mx-auto max-w-6xl grid md:grid-cols-2 gap-20 items-center">
+            <div>
+              <h2 className="text-4xl font-bold tracking-tighter mb-6">Infrastructure that fits your stack.</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                Works with your existing stack, wherever you deploy. Next.js on Vercel, Hono on Cloudflare, or rolling your own auth. Your choice of tools, they all just connect.
+              </p>
+              <div className="flex flex-wrap gap-4 opacity-50 grayscale hover:grayscale-0 transition-all">
+                <div className="w-8 h-8 bg-white/10 rounded"></div>
+                <div className="w-8 h-8 bg-white/10 rounded"></div>
+                <div className="w-8 h-8 bg-white/10 rounded"></div>
+                <div className="w-8 h-8 bg-white/10 rounded"></div>
               </div>
-              
-              <div className="space-y-4">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                  <Activity className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-bold">Uptime & Status</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Monitor HTTP/HTTPS, TCP, and Ping endpoints from global locations. Instant alerts via Email, Slack, or SMS.
-                </p>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-bold">Blacklist Monitor</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Automatically check your IP reputation across 100+ RBLs to ensure your email deliverability remains high.
-                </p>
-              </div>
+            </div>
+            <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent aspect-square p-8 overflow-hidden">
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#3b82f620_0%,transparent_100%)]"></div>
+               <div className="relative w-full h-full flex items-center justify-center">
+                  <ShieldCheck className="w-32 h-32 text-blue-500/50" />
+               </div>
             </div>
           </div>
         </section>
 
-        {/* Enterprise Section */}
-        <section className="py-24 px-6 bg-primary text-primary-foreground">
-          <div className="container mx-auto max-w-4xl text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Built for teams that scale.</h2>
-            <p className="text-primary-foreground/80 text-lg mb-10 max-w-2xl mx-auto">
-              Collaborate with your entire engineering team. Manage permissions, share dashboards, and consolidate billing.
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto mb-12 text-left md:text-center">
-              <div>
-                <div className="font-bold text-2xl mb-1">99.9%</div>
-                <div className="text-sm opacity-80">SLA Guarantee</div>
-              </div>
-              <div>
-                <div className="font-bold text-2xl mb-1">24/7</div>
-                <div className="text-sm opacity-80">Expert Support</div>
-              </div>
-              <div>
-                <div className="font-bold text-2xl mb-1">SSO</div>
-                <div className="text-sm opacity-80">SAML Integration</div>
-              </div>
-              <div>
-                <div className="font-bold text-2xl mb-1">API</div>
-                <div className="text-sm opacity-80">Full Access</div>
-              </div>
+        <section className="py-24 px-6 border-t border-white/5 bg-white/[0.01]">
+          <div className="container mx-auto max-w-6xl grid md:grid-cols-2 gap-20 items-center">
+            <div className="order-2 md:order-1 relative rounded-2xl border border-white/10 bg-black/50 aspect-video overflow-hidden">
+               <div className="p-4 border-b border-white/10 flex gap-2">
+                 <div className="w-2 h-2 rounded-full bg-red-500/50"></div>
+                 <div className="w-2 h-2 rounded-full bg-amber-500/50"></div>
+                 <div className="w-2 h-2 rounded-full bg-emerald-500/50"></div>
+               </div>
+               <div className="p-8 font-mono text-sm text-white/40">
+                 <p className="text-blue-400">const</p> monitor = <p className="text-purple-400">new</p> <p className="text-emerald-400">NetGuardian</p>()<br/>
+                 monitor.<p className="text-blue-400">watch</p>(<p className="text-amber-400">'acme-corp.com'</p>)<br/>
+                 <br/>
+                 <p className="text-white/20">// Continuous security scans active</p>
+               </div>
             </div>
-            <Button size="lg" variant="secondary" className="h-12 px-8">
-              Contact Sales
+            <div className="order-1 md:order-2">
+              <h2 className="text-4xl font-bold tracking-tighter mb-6">Real Monitoring. Better experience.</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                The NetGuardian platform scales from your first user to millions. Automatic backups, observability and compliance. Production ready from day one, managed automatically.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-32 px-6 text-center border-t border-white/5">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tighter mb-8">Ready to secure your infra?</h2>
+          <Link href="/signup">
+            <Button size="lg" className="h-14 px-10 text-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow-[0_0_40px_-10px_rgba(79,70,229,0.5)]">
+              Get Started Now <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-          </div>
+          </Link>
+          <p className="mt-6 text-sm text-muted-foreground">Deploy a monitoring node in an instant. No credit card required.</p>
         </section>
       </main>
 
