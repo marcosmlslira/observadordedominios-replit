@@ -1,5 +1,3 @@
-import React from "react";
-import { Link, useLocation } from "wouter";
 import { 
   Activity, 
   ShieldCheck, 
@@ -13,7 +11,9 @@ import {
   Menu,
   CreditCard,
   Sun,
-  Moon
+  Moon,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
@@ -28,29 +28,48 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface AppShellProps {
   children: React.ReactNode;
 }
 
-const SidebarItem = ({ href, icon: Icon, label, active }: { href: string; icon: any; label: string; active: boolean }) => (
-  <Link href={href}>
-    <a className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-      active 
-        ? "bg-primary/10 text-primary" 
-        : "text-muted-foreground hover:bg-muted hover:text-foreground"
-    }`}>
-      <Icon className="h-4 w-4" />
-      {label}
-    </a>
-  </Link>
-);
+const SidebarItem = ({ href, icon: Icon, label, active, collapsed }: { href: string; icon: any; label: string; active: boolean; collapsed: boolean }) => {
+  const content = (
+    <Link href={href}>
+      <a className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
+        active 
+          ? "bg-primary/10 text-primary" 
+          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+      } ${collapsed ? "justify-center px-0 w-10 h-10" : ""}`}>
+        <Icon className="h-4 w-4 shrink-0" />
+        {!collapsed && <span className="truncate">{label}</span>}
+      </a>
+    </Link>
+  );
+
+  if (collapsed) {
+    return (
+      <Tooltip delayDuration={0}>
+        <TooltipTrigger asChild>
+          {content}
+        </TooltipTrigger>
+        <TooltipContent side="right">
+          {label}
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return content;
+};
 
 export function AppShell({ children }: AppShellProps) {
   const [location] = useLocation();
   const isMobile = useIsMobile();
   const { theme, setTheme } = useTheme();
-  
+  const [isCollapsed, setIsCollapsed] = React.useState(false);
+
   const navItems = [
     { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
     { href: "/domains", icon: Globe, label: "Domains" },
@@ -62,23 +81,25 @@ export function AppShell({ children }: AppShellProps) {
     { href: "/team", icon: Users, label: "Team" },
   ];
 
-  const SidebarContent = () => (
-    <div className="flex flex-col h-full bg-sidebar border-r border-sidebar-border">
-      <div className="p-6">
+  const SidebarContent = ({ collapsed }: { collapsed: boolean }) => (
+    <div className={`flex flex-col h-full bg-sidebar border-r border-sidebar-border transition-all duration-300 ${collapsed ? "w-16" : "w-64"}`}>
+      <div className={`p-6 flex items-center ${collapsed ? "justify-center px-0" : "justify-between"}`}>
         <Link href="/">
           <div className="flex items-center gap-2 font-bold text-xl tracking-tight cursor-pointer">
-            <div className="w-8 h-8 bg-primary text-primary-foreground rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-primary text-primary-foreground rounded-lg flex items-center justify-center shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            NetGuardian
+            {!collapsed && <span>NetGuardian</span>}
           </div>
         </Link>
       </div>
       
-      <div className="flex-1 px-4 py-2 space-y-1">
-        <div className="text-xs font-semibold text-muted-foreground mb-2 px-2 uppercase tracking-wider">
-          Platform
-        </div>
+      <div className="flex-1 px-3 py-2 space-y-1 overflow-y-auto overflow-x-hidden">
+        {!collapsed && (
+          <div className="text-xs font-semibold text-muted-foreground mb-2 px-2 uppercase tracking-wider">
+            Platform
+          </div>
+        )}
         {navItems.map((item) => (
           <SidebarItem 
             key={item.href}
@@ -86,43 +107,50 @@ export function AppShell({ children }: AppShellProps) {
             icon={item.icon}
             label={item.label}
             active={location === item.href}
+            collapsed={collapsed}
           />
         ))}
         
-        <div className="mt-8 text-xs font-semibold text-muted-foreground mb-2 px-2 uppercase tracking-wider">
-          Settings
-        </div>
+        {!collapsed && (
+          <div className="mt-8 text-xs font-semibold text-muted-foreground mb-2 px-2 uppercase tracking-wider">
+            Settings
+          </div>
+        )}
         <SidebarItem 
           href="/billing"
           icon={CreditCard}
           label="Billing & Plans"
           active={location === "/billing"}
+          collapsed={collapsed}
         />
         <SidebarItem 
           href="/settings"
           icon={Settings}
           label="Configuration"
           active={location === "/settings"}
+          collapsed={collapsed}
         />
       </div>
 
-      <div className="p-4 border-t border-sidebar-border">
-        <div className="flex items-center gap-3 p-2 rounded-md hover:bg-sidebar-accent cursor-pointer transition-colors">
-          <Avatar className="h-8 w-8">
+      <div className={`p-4 border-t border-sidebar-border ${collapsed ? "flex flex-col items-center gap-4" : ""}`}>
+        <div className={`flex items-center gap-3 p-2 rounded-md hover:bg-sidebar-accent cursor-pointer transition-colors ${collapsed ? "justify-center" : ""}`}>
+          <Avatar className="h-8 w-8 shrink-0">
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium leading-none truncate">Jane Doe</p>
-            <p className="text-xs text-muted-foreground truncate">Acme Corp</p>
-          </div>
+          {!collapsed && (
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium leading-none truncate">Jane Doe</p>
+              <p className="text-xs text-muted-foreground truncate">Acme Corp</p>
+            </div>
+          )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8 ml-auto">
+              <Button variant="ghost" size="icon" className={`h-8 w-8 ${collapsed ? "" : "ml-auto"}`}>
                 <Settings className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align={collapsed ? "center" : "end"} side={collapsed ? "right" : "bottom"}>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="cursor-pointer">
@@ -150,6 +178,15 @@ export function AppShell({ children }: AppShellProps) {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className={`h-8 w-8 mt-2 ${collapsed ? "" : "ml-auto"}`}
+          onClick={() => setIsCollapsed(!collapsed)}
+        >
+          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+        </Button>
       </div>
     </div>
   );
@@ -157,8 +194,8 @@ export function AppShell({ children }: AppShellProps) {
   return (
     <div className="min-h-screen bg-background flex">
       {/* Desktop Sidebar */}
-      <div className="hidden md:block w-64 h-screen sticky top-0">
-        <SidebarContent />
+      <div className={`hidden md:block h-screen sticky top-0 transition-all duration-300 ${isCollapsed ? "w-16" : "w-64"}`}>
+        <SidebarContent collapsed={isCollapsed} />
       </div>
 
       {/* Main Content */}
@@ -176,13 +213,15 @@ export function AppShell({ children }: AppShellProps) {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="p-0 w-64">
-              <SidebarContent />
+              <SidebarContent collapsed={false} />
             </SheetContent>
           </Sheet>
         </div>
 
         <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full animate-in fade-in duration-500">
-          {children}
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
         </main>
       </div>
     </div>
