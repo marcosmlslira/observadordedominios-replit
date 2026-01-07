@@ -34,7 +34,9 @@ export default function Login() {
              </div>
              <Input id="password" type="password" />
            </div>
-           <Button className="w-full">Sign In</Button>
+           <Link href="/dashboard" className="w-full">
+             <Button className="w-full" data-testid="button-submit-login">Sign In</Button>
+           </Link>
            
            <div className="relative">
              <div className="absolute inset-0 flex items-center">

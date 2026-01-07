@@ -25,10 +25,10 @@ export default function LandingPage() {
 
           <div className="flex items-center gap-4">
             <Link href="/login">
-              <Button variant="ghost" className="hidden md:inline-flex">Log in</Button>
+              <Button variant="ghost" className="hidden md:inline-flex" data-testid="button-login">Log in</Button>
             </Link>
             <Link href="/signup">
-              <Button>Start Free Trial</Button>
+              <Button data-testid="button-signup">Start Free Trial</Button>
             </Link>
           </div>
         </div>

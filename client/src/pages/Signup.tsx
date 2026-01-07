@@ -42,7 +42,9 @@ export default function Signup() {
              <Label htmlFor="confirmPassword">Confirm Password</Label>
              <Input id="confirmPassword" type="password" />
            </div>
-           <Button className="w-full">Create Account</Button>
+           <Link href="/dashboard" className="w-full">
+             <Button className="w-full" data-testid="button-submit-signup">Create Account</Button>
+           </Link>
            <p className="text-xs text-muted-foreground text-center px-4">
              By clicking "Create Account", you agree to our Terms of Service and Privacy Policy.
            </p>
