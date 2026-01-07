@@ -9,6 +9,7 @@ import Dashboard from "@/pages/Dashboard";
 import Domains from "@/pages/Domains";
 import DomainSimilarity from "@/pages/DomainSimilarity";
 import Uptime from "@/pages/Uptime";
+import UptimeDetail from "@/pages/UptimeDetail";
 import Blacklist from "@/pages/Blacklist";
 import Tools from "@/pages/Tools";
 import Alerts from "@/pages/Alerts";
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/domains" component={Domains} />
       <Route path="/similarity" component={DomainSimilarity} />
       <Route path="/uptime" component={Uptime} />
+      <Route path="/uptime/:id" component={UptimeDetail} />
       <Route path="/blacklist" component={Blacklist} />
       <Route path="/tools" component={Tools} />
       <Route path="/alerts" component={Alerts} />

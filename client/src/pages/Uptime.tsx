@@ -86,7 +86,7 @@ export default function Uptime() {
               </TableHeader>
               <TableBody>
                 {monitors.map((m) => (
-                  <TableRow key={m.id}>
+                  <TableRow key={m.id} className="cursor-pointer hover:bg-muted/50 transition-colors" onClick={() => window.location.href = `/uptime/${m.id}`}>
                     <TableCell>
                       <div className="flex flex-col">
                         <span className="font-medium">{m.name}</span>
