@@ -11,8 +11,11 @@ import {
   LayoutDashboard,
   Settings,
   Menu,
-  CreditCard
+  CreditCard,
+  Sun,
+  Moon
 } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -46,6 +49,7 @@ const SidebarItem = ({ href, icon: Icon, label, active }: { href: string; icon: 
 export function AppShell({ children }: AppShellProps) {
   const [location] = useLocation();
   const isMobile = useIsMobile();
+  const { theme, setTheme } = useTheme();
   
   const navItems = [
     { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -120,6 +124,18 @@ export function AppShell({ children }: AppShellProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+                {theme === "dark" ? (
+                  <>
+                    <Sun className="mr-2 h-4 w-4" /> Light Mode
+                  </>
+                ) : (
+                  <>
+                    <Moon className="mr-2 h-4 w-4" /> Dark Mode
+                  </>
+                )}
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <Link href="/billing">

@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "wouter";
-import { ShieldCheck, ArrowRight, Check, Activity, Globe, Search, Lock } from "lucide-react";
+import { ShieldCheck, ArrowRight, Check, Activity, Globe, Search, Lock, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
 
 export default function LandingPage() {
+  const { theme, setTheme } = useTheme();
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans">
       {/* Header */}
@@ -24,6 +26,14 @@ export default function LandingPage() {
           </nav>
 
           <div className="flex items-center gap-4">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="rounded-full"
+            >
+              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </Button>
             <Link href="/login">
               <Button variant="ghost" className="hidden md:inline-flex" data-testid="button-login">Log in</Button>
             </Link>

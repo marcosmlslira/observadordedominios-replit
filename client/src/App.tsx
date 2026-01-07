@@ -18,6 +18,8 @@ import Billing from "@/pages/Billing";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 
+import { ThemeProvider } from "next-themes";
+
 function Router() {
   return (
     <Switch>
@@ -42,10 +44,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <ThemeProvider attribute="class" defaultTheme="dark">
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
