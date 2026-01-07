@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import LandingPage from "@/pages/Landing";
 import Dashboard from "@/pages/Dashboard";
 import Domains from "@/pages/Domains";
+import DomainSimilarity from "@/pages/DomainSimilarity";
 import Uptime from "@/pages/Uptime";
 import Blacklist from "@/pages/Blacklist";
 import Tools from "@/pages/Tools";
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/" component={LandingPage} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/domains" component={Domains} />
+      <Route path="/similarity" component={DomainSimilarity} />
       <Route path="/uptime" component={Uptime} />
       <Route path="/blacklist" component={Blacklist} />
       <Route path="/tools" component={Tools} />

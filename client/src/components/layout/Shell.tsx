@@ -49,6 +49,7 @@ export function AppShell({ children }: AppShellProps) {
   const navItems = [
     { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
     { href: "/domains", icon: Globe, label: "Domains" },
+    { href: "/similarity", icon: ShieldCheck, label: "Similarity Monitor" },
     { href: "/uptime", icon: Activity, label: "Uptime" },
     { href: "/blacklist", icon: ShieldCheck, label: "Blacklist" },
     { href: "/tools", icon: Search, label: "Free Tools" },
