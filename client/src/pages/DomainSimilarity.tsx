@@ -12,8 +12,22 @@ import {
   CheckCircle2, 
   Filter,
   Eye,
-  ArrowRight
+  ArrowRight,
+  Shield,
+  FileText,
+  Gavel,
+  Mail,
+  Info
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -218,16 +232,59 @@ export default function DomainSimilarity() {
                         <TableCell className="text-sm text-muted-foreground">
                           {item.detected}
                         </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                              <Eye className="w-4 h-4" />
-                            </Button>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                        <Dialog>
+                          <DialogTrigger asChild>
                             <Button variant="outline" size="sm" className={item.riskLevel === "Critical" ? "text-red-600 hover:text-red-700" : ""}>
                               Report
                             </Button>
-                          </div>
-                        </TableCell>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[500px]">
+                            <DialogHeader>
+                              <DialogTitle className="flex items-center gap-2">
+                                <ShieldAlert className="w-5 h-5 text-red-600" />
+                                Reporting Procedure
+                              </DialogTitle>
+                              <DialogDescription>
+                                Step-by-step guide to take down <strong>{item.domain}</strong>.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4 text-sm leading-relaxed">
+                              <div className="flex gap-3 items-start p-3 rounded-lg bg-muted/50">
+                                <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 font-bold text-xs">1</div>
+                                <div>
+                                  <p className="font-semibold flex items-center gap-1.5"><Mail className="w-4 h-4" /> Contact Registrar / Host</p>
+                                  <p className="text-muted-foreground">Send an abuse report to the hosting provider and domain registrar with evidence of impersonation.</p>
+                                </div>
+                              </div>
+                              <div className="flex gap-3 items-start p-3 rounded-lg bg-muted/50">
+                                <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 font-bold text-xs">2</div>
+                                <div>
+                                  <p className="font-semibold flex items-center gap-1.5"><Shield className="w-4 h-4" /> Report to Google Safe Browsing</p>
+                                  <p className="text-muted-foreground">Submit the URL to help block the site across Chrome and other major browsers.</p>
+                                </div>
+                              </div>
+                              <div className="flex gap-3 items-start p-3 rounded-lg bg-muted/50">
+                                <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 font-bold text-xs">3</div>
+                                <div>
+                                  <p className="font-semibold flex items-center gap-1.5"><Gavel className="w-4 h-4" /> Legal Action</p>
+                                  <p className="text-muted-foreground">If phishing persists, initiate a UDRP (Uniform Domain-Name Dispute-Resolution Policy) complaint.</p>
+                                </div>
+                              </div>
+                            </div>
+                            <DialogFooter>
+                              <Button variant="outline" className="w-full" onClick={() => window.open(`https://safebrowsing.google.com/safebrowsing/report_phish/?url=${item.domain}`, '_blank')}>
+                                Go to Google Reporting <ExternalLink className="ml-2 w-3 h-3" />
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+                    </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
