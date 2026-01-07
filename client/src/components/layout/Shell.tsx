@@ -10,7 +10,8 @@ import {
   LogOut, 
   LayoutDashboard,
   Settings,
-  Menu
+  Menu,
+  CreditCard
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -88,6 +89,12 @@ export function AppShell({ children }: AppShellProps) {
           Settings
         </div>
         <SidebarItem 
+          href="/billing"
+          icon={CreditCard}
+          label="Billing & Plans"
+          active={location === "/billing"}
+        />
+        <SidebarItem 
           href="/settings"
           icon={Settings}
           label="Configuration"
@@ -115,7 +122,9 @@ export function AppShell({ children }: AppShellProps) {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
+              <Link href="/billing">
+                <DropdownMenuItem className="cursor-pointer">Billing</DropdownMenuItem>
+              </Link>
               <DropdownMenuSeparator />
               <Link href="/login">
                 <DropdownMenuItem className="text-destructive cursor-pointer">

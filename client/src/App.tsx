@@ -14,6 +14,7 @@ import Tools from "@/pages/Tools";
 import Alerts from "@/pages/Alerts";
 import Team from "@/pages/Team";
 import Settings from "@/pages/Settings";
+import Billing from "@/pages/Billing";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 
@@ -30,6 +31,7 @@ function Router() {
       <Route path="/alerts" component={Alerts} />
       <Route path="/team" component={Team} />
       <Route path="/settings" component={Settings} />
+      <Route path="/billing" component={Billing} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route component={NotFound} />
