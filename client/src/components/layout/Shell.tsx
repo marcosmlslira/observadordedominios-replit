@@ -125,7 +125,7 @@ export function AppShell({ children }: AppShellProps) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+              <DropdownMenuItem onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="cursor-pointer">
                 {theme === "dark" ? (
                   <>
                     <Sun className="mr-2 h-4 w-4" /> Light Mode
