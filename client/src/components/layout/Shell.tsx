@@ -1,3 +1,5 @@
+import React from "react";
+import { Link, useLocation } from "wouter";
 import { 
   Activity, 
   ShieldCheck, 
@@ -37,14 +39,14 @@ interface AppShellProps {
 const SidebarItem = ({ href, icon: Icon, label, active, collapsed }: { href: string; icon: any; label: string; active: boolean; collapsed: boolean }) => {
   const content = (
     <Link href={href}>
-      <a className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 ${
+      <div className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md cursor-pointer transition-all duration-300 ${
         active 
-          ? "bg-primary/10 text-primary" 
+          ? "bg-primary/10 text-primary font-semibold" 
           : "text-muted-foreground hover:bg-muted hover:text-foreground"
-      } ${collapsed ? "justify-center px-0 w-10 h-10" : ""}`}>
-        <Icon className="h-4 w-4 shrink-0" />
+      } ${collapsed ? "justify-center px-0 w-10 h-10 mx-auto" : ""}`}>
+        <Icon className={`h-4 w-4 shrink-0 ${active ? "text-primary" : ""}`} />
         {!collapsed && <span className="truncate">{label}</span>}
-      </a>
+      </div>
     </Link>
   );
 
@@ -82,7 +84,7 @@ export function AppShell({ children }: AppShellProps) {
   ];
 
   const SidebarContent = ({ collapsed }: { collapsed: boolean }) => (
-    <div className={`flex flex-col h-full bg-sidebar border-r border-sidebar-border transition-all duration-300 ${collapsed ? "w-16" : "w-64"}`}>
+    <div className={`flex flex-col h-full bg-sidebar border-r border-sidebar-border transition-all duration-300 ${collapsed ? "w-20" : "w-64"}`}>
       <div className={`p-6 flex items-center ${collapsed ? "justify-center px-0" : "justify-between"}`}>
         <Link href="/">
           <div className="flex items-center gap-2 font-bold text-xl tracking-tight cursor-pointer">
@@ -96,7 +98,7 @@ export function AppShell({ children }: AppShellProps) {
       
       <div className="flex-1 px-3 py-2 space-y-1 overflow-y-auto overflow-x-hidden">
         {!collapsed && (
-          <div className="text-xs font-semibold text-muted-foreground mb-2 px-2 uppercase tracking-wider">
+          <div className="text-[10px] font-bold text-muted-foreground/60 mb-2 px-2 uppercase tracking-[0.2em]">
             Platform
           </div>
         )}
@@ -112,7 +114,7 @@ export function AppShell({ children }: AppShellProps) {
         ))}
         
         {!collapsed && (
-          <div className="mt-8 text-xs font-semibold text-muted-foreground mb-2 px-2 uppercase tracking-wider">
+          <div className="mt-8 text-[10px] font-bold text-muted-foreground/60 mb-2 px-2 uppercase tracking-[0.2em]">
             Settings
           </div>
         )}
@@ -166,15 +168,19 @@ export function AppShell({ children }: AppShellProps) {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
-              <Link href="/billing">
-                <DropdownMenuItem className="cursor-pointer">Billing</DropdownMenuItem>
-              </Link>
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link href="/billing">
+                  <div className="w-full">Billing</div>
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <Link href="/login">
-                <DropdownMenuItem className="text-destructive cursor-pointer">
-                  <LogOut className="mr-2 h-4 w-4" /> Log out
-                </DropdownMenuItem>
-              </Link>
+              <DropdownMenuItem asChild className="text-destructive cursor-pointer">
+                <Link href="/login">
+                  <div className="flex items-center w-full">
+                    <LogOut className="mr-2 h-4 w-4" /> Log out
+                  </div>
+                </Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -182,7 +188,7 @@ export function AppShell({ children }: AppShellProps) {
         <Button 
           variant="ghost" 
           size="icon" 
-          className={`h-8 w-8 mt-2 ${collapsed ? "" : "ml-auto"}`}
+          className={`h-8 w-8 mt-2 transition-transform duration-300 ${collapsed ? "" : "ml-auto"}`}
           onClick={() => setIsCollapsed(!collapsed)}
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
@@ -192,9 +198,9 @@ export function AppShell({ children }: AppShellProps) {
   );
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background flex text-foreground">
       {/* Desktop Sidebar */}
-      <div className={`hidden md:block h-screen sticky top-0 transition-all duration-300 ${isCollapsed ? "w-16" : "w-64"}`}>
+      <div className={`hidden md:block h-screen sticky top-0 transition-all duration-300 ${isCollapsed ? "w-20" : "w-64"}`}>
         <SidebarContent collapsed={isCollapsed} />
       </div>
 
