@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { AppShell } from "@/components/layout/Shell";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Plus, Activity, CheckCircle2, AlertTriangle, XCircle, MoreVertical } from "lucide-react";
+import { Plus, Activity, CheckCircle2, AlertTriangle, XCircle, MoreVertical, Globe, Clock, Shield, RefreshCcw, Trash2 } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -12,6 +12,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 
 const monitors = [
   { id: 1, name: "API Production", url: "https://api.acme.com", type: "HTTPS", interval: "1m", status: "up", uptime: "99.99%", avgRes: "120ms" },
@@ -22,6 +43,18 @@ const monitors = [
 ];
 
 export default function Uptime() {
+  const { toast } = useToast();
+  const [isAddOpen, setIsAddOpen] = useState(false);
+
+  const handleAddMonitor = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsAddOpen(false);
+    toast({
+      title: "Monitor added successfully",
+      description: "NetGuardian is now monitoring your service.",
+    });
+  };
+
   return (
     <AppShell>
       <div className="flex flex-col gap-6">
@@ -32,9 +65,68 @@ export default function Uptime() {
               Track the availability and performance of your services.
             </p>
           </div>
-          <Button className="gap-2">
-             <Plus className="w-4 h-4" /> Add Monitor
-          </Button>
+          
+          <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+            <DialogTrigger asChild>
+              <Button className="gap-2 bg-emerald-500 hover:bg-emerald-600 text-white border-none shadow-lg shadow-emerald-500/20">
+                 <Plus className="w-4 h-4" /> Add Monitor
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[525px] bg-[#0a0a0b] border-white/5">
+              <form onSubmit={handleAddMonitor}>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold text-white">Add New Monitor</DialogTitle>
+                  <DialogDescription className="text-muted-foreground">
+                    Configure a new endpoint to monitor its availability and response time.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-6 py-6">
+                  <div className="grid gap-2">
+                    <Label htmlFor="name" className="text-sm font-medium text-white/70">Friendly Name</Label>
+                    <Input id="name" placeholder="e.g. My Website" className="bg-white/5 border-white/10 focus:border-emerald-500/50" required />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="url" className="text-sm font-medium text-white/70">URL (HTTP/S) or IP</Label>
+                    <Input id="url" placeholder="https://example.com" className="bg-white/5 border-white/10 focus:border-emerald-500/50" required />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="type" className="text-sm font-medium text-white/70">Monitor Type</Label>
+                      <Select defaultValue="https">
+                        <SelectTrigger className="bg-white/5 border-white/10">
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[#0a0a0b] border-white/10">
+                          <SelectItem value="https">HTTPS</SelectItem>
+                          <SelectItem value="http">HTTP</SelectItem>
+                          <SelectItem value="ping">Ping</SelectItem>
+                          <SelectItem value="tcp">Port (TCP)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="interval" className="text-sm font-medium text-white/70">Check Interval</Label>
+                      <Select defaultValue="5m">
+                        <SelectTrigger className="bg-white/5 border-white/10">
+                          <SelectValue placeholder="Select interval" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[#0a0a0b] border-white/10">
+                          <SelectItem value="30s">30 seconds</SelectItem>
+                          <SelectItem value="1m">1 minute</SelectItem>
+                          <SelectItem value="5m">5 minutes</SelectItem>
+                          <SelectItem value="10m">10 minutes</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="button" variant="ghost" onClick={() => setIsAddOpen(false)} className="text-white/50 hover:text-white">Cancel</Button>
+                  <Button type="submit" className="bg-emerald-500 hover:bg-emerald-600 text-white">Create Monitor</Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
@@ -122,9 +214,36 @@ export default function Uptime() {
                       {m.avgRes}
                     </TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <MoreVertical className="w-4 h-4" />
-                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={(e) => e.stopPropagation()}>
+                            <MoreVertical className="w-4 h-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="bg-[#0a0a0b] border-white/10">
+                          <DropdownMenuLabel>Monitor Actions</DropdownMenuLabel>
+                          <DropdownMenuSeparator className="bg-white/10" />
+                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={(e) => {
+                            e.stopPropagation();
+                            window.location.href = `/uptime/${m.id}`;
+                          }}>
+                            <Activity className="w-4 h-4" /> View Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer gap-2" onClick={(e) => {
+                            e.stopPropagation();
+                            toast({ title: "Check Triggered", description: `Manual check started for ${m.name}` });
+                          }}>
+                            <RefreshCcw className="w-4 h-4" /> Check Now
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator className="bg-white/10" />
+                          <DropdownMenuItem className="cursor-pointer gap-2 text-red-500 focus:text-red-400" onClick={(e) => {
+                            e.stopPropagation();
+                            toast({ title: "Monitor Deleted", description: `${m.name} removed.`, variant: "destructive" });
+                          }}>
+                            <Trash2 className="w-4 h-4" /> Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 ))}

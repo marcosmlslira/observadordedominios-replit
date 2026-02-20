@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AppShell } from "@/components/layout/Shell";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,9 @@ import {
   Shield, 
   BarChart3,
   ChevronRight,
-  RefreshCcw
+  RefreshCcw,
+  Trash2,
+  AlertCircle
 } from "lucide-react";
 import { Link, useParams } from "wouter";
 import {
@@ -28,6 +30,24 @@ import {
   AreaChart,
   Area
 } from "recharts";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const responseTimeData = [
   { time: "21:40", value: 210 },
@@ -43,7 +63,24 @@ const responseTimeData = [
 
 export default function UptimeDetail() {
   const { id } = useParams();
-  
+  const { toast } = useToast();
+  const [isPaused, setIsPaused] = useState(false);
+
+  const handleTestNotification = () => {
+    toast({
+      title: "Notification Test Sent",
+      description: "We've sent a test alert to all configured channels.",
+    });
+  };
+
+  const handleTogglePause = () => {
+    setIsPaused(!isPaused);
+    toast({
+      title: isPaused ? "Monitor Resumed" : "Monitor Paused",
+      description: isPaused ? "Monitoring has been resumed for this service." : "Monitoring is now suspended.",
+    });
+  };
+
   return (
     <AppShell>
       <div className="flex flex-col gap-6 pb-10">
@@ -55,18 +92,81 @@ export default function UptimeDetail() {
             </Button>
           </Link>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="gap-2">
+            <Button variant="outline" size="sm" className="gap-2 border-white/10 hover:bg-white/5" onClick={handleTestNotification}>
               <RefreshCcw className="w-4 h-4" /> Test Notification
             </Button>
-            <Button variant="outline" size="sm" className="gap-2">
-              <Pause className="w-4 h-4" /> Pause
+            <Button variant="outline" size="sm" className={`gap-2 border-white/10 ${isPaused ? 'text-emerald-500 hover:text-emerald-400' : 'text-amber-500 hover:text-amber-400'} hover:bg-white/5`} onClick={handleTogglePause}>
+              {isPaused ? <><Play className="w-4 h-4" /> Resume</> : <><Pause className="w-4 h-4" /> Pause</>}
             </Button>
-            <Button variant="outline" size="sm" className="gap-2">
-              <Settings className="w-4 h-4" /> Edit
+            <Button variant="outline" size="sm" className="gap-2 border-white/10 hover:bg-white/5" onClick={() => {
+              toast({
+                title: "Report Generated",
+                description: "The uptime report for sindicoai.com.br is being generated.",
+              });
+            }}>
+              <BarChart3 className="w-4 h-4" /> Report
             </Button>
-            <Button variant="outline" size="icon" className="h-8 w-8">
-              <MoreVertical className="w-4 h-4" />
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2 border-white/10 hover:bg-white/5">
+                  <Settings className="w-4 h-4" /> Edit
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[525px] bg-[#0a0a0b] border-white/5">
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  toast({ title: "Monitor Updated", description: "Your changes have been saved." });
+                }}>
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl font-bold text-white">Edit Monitor</DialogTitle>
+                    <DialogDescription className="text-muted-foreground">
+                      Update the configuration for sindicoai.com.br.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-6 py-6">
+                    <div className="grid gap-2 text-white/70">
+                      <label className="text-sm font-medium">Friendly Name</label>
+                      <input className="flex h-10 w-full rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50" defaultValue="sindicoai.com.br" required />
+                    </div>
+                    <div className="grid gap-2 text-white/70">
+                      <label className="text-sm font-medium">URL</label>
+                      <input className="flex h-10 w-full rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50" defaultValue="https://sindicoai.com.br" required />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button type="submit" className="bg-emerald-500 hover:bg-emerald-600 text-white">Save Changes</Button>
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" className="h-8 w-8 border-white/10 hover:bg-white/5">
+                  <MoreVertical className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="bg-[#0a0a0b] border-white/10">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem className="cursor-pointer gap-2">
+                  <Clock className="w-4 h-4" /> View History
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer gap-2">
+                  <Shield className="w-4 h-4" /> Alerts Settings
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem className="cursor-pointer gap-2 text-red-500 focus:text-red-400" onClick={() => {
+                  toast({
+                    title: "Monitor Deleted",
+                    description: "sindicoai.com.br has been removed from monitoring.",
+                    variant: "destructive"
+                  });
+                }}>
+                  <Trash2 className="w-4 h-4" /> Delete Monitor
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
