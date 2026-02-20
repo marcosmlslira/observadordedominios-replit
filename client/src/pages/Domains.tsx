@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AppShell } from "@/components/layout/Shell";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +11,9 @@ import {
   ShieldCheck, 
   AlertCircle,
   Calendar,
-  Filter
+  Filter,
+  Globe,
+  Loader2
 } from "lucide-react";
 import {
   Table,
@@ -29,8 +31,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 
-const domains = [
+const domainsData = [
   { id: 1, name: "acme-corp.com", registrar: "GoDaddy", expires: "2024-12-01", status: "Active", autoRenew: true, ssl: true },
   { id: 2, name: "acme-api.io", registrar: "Namecheap", expires: "2024-05-15", status: "Active", autoRenew: true, ssl: true },
   { id: 3, name: "project-x.net", registrar: "Google Domains", expires: "2024-02-28", status: "Expiring Soon", autoRenew: false, ssl: true },
@@ -39,6 +52,25 @@ const domains = [
 ];
 
 export default function Domains() {
+  const { toast } = useToast();
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleAddDomain = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsAddOpen(false);
+      toast({
+        title: "Domain added",
+        description: "The domain has been successfully added to your portfolio.",
+      });
+    }, 1500);
+  };
+
   return (
     <AppShell>
       <div className="flex flex-col gap-6">
@@ -47,21 +79,78 @@ export default function Domains() {
             <h1 className="text-3xl font-bold tracking-tight">Domains</h1>
             <p className="text-muted-foreground mt-1">Manage and monitor your domain portfolio.</p>
           </div>
-          <Button className="gap-2">
-             <Plus className="w-4 h-4" /> Add Domain
-          </Button>
+          
+          <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+            <DialogTrigger asChild>
+              <Button className="gap-2 bg-emerald-500 hover:bg-emerald-600 text-white border-none shadow-lg shadow-emerald-500/20 transition-all">
+                 <Plus className="w-4 h-4" /> Add Domain
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] bg-[#0a0a0b] border-white/5">
+              <form onSubmit={handleAddDomain}>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold text-white flex items-center gap-2">
+                    <Globe className="w-6 h-6 text-emerald-500" />
+                    Add Domain
+                  </DialogTitle>
+                  <DialogDescription className="text-muted-foreground">
+                    Enter the domain name you want to monitor. We'll automatically fetch WHOIS and DNS data.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-6">
+                  <div className="grid gap-2">
+                    <Label htmlFor="domain" className="text-sm font-medium text-white/70 text-left">Domain Name</Label>
+                    <Input 
+                      id="domain" 
+                      placeholder="example.com" 
+                      className="bg-white/5 border-white/10 focus:border-emerald-500/50" 
+                      required 
+                      disabled={isSubmitting}
+                    />
+                  </div>
+                  <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-lg p-3">
+                    <p className="text-xs text-emerald-500/80 leading-relaxed">
+                      <strong>Tip:</strong> Adding a domain will enable automatic uptime monitoring, SSL tracking, and expiry alerts.
+                    </p>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button 
+                    type="button" 
+                    variant="ghost" 
+                    onClick={() => setIsAddOpen(false)} 
+                    className="text-white/50 hover:text-white"
+                    disabled={isSubmitting}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    type="submit" 
+                    className="bg-emerald-500 hover:bg-emerald-600 text-white min-w-[120px]"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Adding...</>
+                    ) : (
+                      "Add Domain"
+                    )}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
 
-        <Card>
+        <Card className="bg-card/50 border-white/5">
           <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <CardTitle>All Domains</CardTitle>
               <div className="flex items-center gap-2">
                  <div className="relative w-full max-w-sm">
                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                   <Input type="search" placeholder="Search domains..." className="pl-9 w-[250px]" />
+                   <Input type="search" placeholder="Search domains..." className="pl-9 w-[200px] md:w-[250px] bg-white/5 border-white/10" />
                  </div>
-                 <Button variant="outline" size="icon">
+                 <Button variant="outline" size="icon" className="border-white/10 bg-white/5">
                    <Filter className="h-4 w-4" />
                  </Button>
               </div>
@@ -70,68 +159,68 @@ export default function Domains() {
           <CardContent>
              <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Domain Name</TableHead>
-                    <TableHead>Registrar</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Expiration</TableHead>
-                    <TableHead className="text-center">SSL</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                  <TableRow className="hover:bg-transparent border-white/5">
+                    <TableHead className="text-white/40">Domain Name</TableHead>
+                    <TableHead className="text-white/40">Registrar</TableHead>
+                    <TableHead className="text-white/40">Status</TableHead>
+                    <TableHead className="text-white/40">Expiration</TableHead>
+                    <TableHead className="text-center text-white/40">SSL</TableHead>
+                    <TableHead className="text-right text-white/40">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {domains.map((domain) => (
-                    <TableRow key={domain.id}>
+                  {domainsData.map((domain) => (
+                    <TableRow key={domain.id} className="border-white/5 hover:bg-white/[0.02] transition-colors group">
                       <TableCell className="font-medium">
                         <div className="flex flex-col">
-                          <span className="text-sm font-semibold">{domain.name}</span>
+                          <span className="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors">{domain.name}</span>
                           <span className="text-xs text-muted-foreground">Updated 2h ago</span>
                         </div>
                       </TableCell>
-                      <TableCell>{domain.registrar}</TableCell>
+                      <TableCell className="text-white/70">{domain.registrar}</TableCell>
                       <TableCell>
                         <Badge 
                           variant="outline" 
-                          className={`gap-1 ${
+                          className={`gap-1 px-2 py-0.5 border-none shadow-sm ${
                             domain.status === "Active" 
-                              ? "bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800" 
-                              : "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800"
+                              ? "bg-emerald-500/10 text-emerald-400" 
+                              : "bg-amber-500/10 text-amber-400"
                           }`}
                         >
                           {domain.status === "Active" ? <ShieldCheck className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
                           {domain.status}
                         </Badge>
                       </TableCell>
-                      <TableCell className="font-mono text-sm">
+                      <TableCell className="font-mono text-xs text-white/60">
                          <div className="flex items-center gap-2">
-                           <Calendar className="w-3 h-3 text-muted-foreground" />
+                           <Calendar className="w-3 h-3 text-white/40" />
                            {domain.expires}
                          </div>
                       </TableCell>
                       <TableCell className="text-center">
                         {domain.ssl ? (
-                           <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                             <ShieldCheck className="w-3 h-3" />
+                           <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-500">
+                             <ShieldCheck className="w-3.5 h-3.5" />
                            </div>
                         ) : (
-                           <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
-                             <AlertCircle className="w-3 h-3" />
+                           <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-500/10 text-red-500">
+                             <AlertCircle className="w-3.5 h-3.5" />
                            </div>
                         )}
                       </TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
+                            <Button variant="ghost" size="icon" className="hover:bg-white/5 text-white/40 hover:text-white">
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
+                          <DropdownMenuContent align="end" className="bg-[#0a0a0b] border-white/5">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>View Details</DropdownMenuItem>
-                            <DropdownMenuItem>Check DNS</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-destructive">Remove Domain</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer focus:bg-emerald-500/10 focus:text-emerald-400">View Details</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer focus:bg-emerald-500/10 focus:text-emerald-400">Check DNS</DropdownMenuItem>
+                            <DropdownMenuSeparator className="bg-white/5" />
+                            <DropdownMenuItem className="text-red-400 focus:bg-red-500/10 focus:text-red-400 cursor-pointer">Remove Domain</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>
@@ -145,3 +234,4 @@ export default function Domains() {
     </AppShell>
   );
 }
+
